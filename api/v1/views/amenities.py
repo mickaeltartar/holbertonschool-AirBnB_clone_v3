@@ -58,15 +58,18 @@ def delete_amenity(amenity_id):
 def post_amenity():
     """ create an amenity """
 
-    json_request = request.get_json()
+    try:
+        data = request.get_json()
+    except Exception as e:
+        abort(400, description="Not a JSON: {}".format(str(e)))
 
-    if json_request is None:
+    if data is None:
         abort(400, 'Not a JSON')
 
-    if 'name' not in json_request:
+    if 'name' not in data:
         abort(400, 'Missing name')
 
-    amenity = Amenity(**json_request)
+    amenity = Amenity(**data)
     amenity.save()
     return jsonify(amenity.to_dict()), 201
 
@@ -82,9 +85,16 @@ def update_amenity(amenity_id):
     if not amenity:
         abort(404)
 
-    data = request.get_json()
+    try:
+        data = request.get_json()
+    except Exception as e:
+        abort(400, description="Not a JSON: {}".format(str(e)))
+
     if not data:
         abort(400, 'Not a JSON')
+
+    if "id" in data and data["id"] != amenity_id:
+        abort(404, description="error: Not found")
 
     ignore_keys = ['id', 'state_id', 'create_at', 'updated_at']
 

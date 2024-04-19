@@ -62,7 +62,11 @@ def create_city(state_id):
     if not state:
         abort(404)
 
-    data = request.get_json()
+    try:
+        data = request.get_json()
+    except Exception as e:
+        abort(400, description="Not a JSON: {}".format(str(e)))
+
     if not data:
         abort(400, 'Not a JSON')
     if 'name' not in data:
@@ -85,9 +89,16 @@ def update_city(city_id):
     if not city:
         abort(404)
 
-    data = request.get_json()
+    try:
+        data = request.get_json()
+    except Exception as e:
+        abort(400, description="Not a JSON: {}".format(str(e)))
+
     if not data:
         abort(400, 'Not a JSON')
+
+    if "id" in data and data["id"] != city_id:
+        abort(404, description="error: Not found")
 
     ignore_keys = ['id', 'state_id', 'create_at', 'updated_at']
 

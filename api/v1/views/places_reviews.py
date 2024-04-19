@@ -75,7 +75,10 @@ def create_review(place_id):
     if not place:
         abort(404)
 
-    data = request.get_json()
+    try:
+        data = request.get_json()
+    except Exception as e:
+        abort(400, description="Not a JSON: {}".format(str(e)))
 
     if not data:
         abort(400, "Not a JSON")
@@ -107,10 +110,16 @@ def update_review(review_id):
     if not review:
         abort(404)
 
-    data = request.get_json()
+    try:
+        data = request.get_json()
+    except Exception as e:
+        abort(400, description="Not a JSON: {}".format(str(e)))
 
     if not data:
         abort(400, "Not a JSON")
+
+    if "id" in data and data["id"] != review_id:
+        abort(404, description="error: Not found")
 
     ignore_key = ["id", "user_id", "place_id", "created_at", "updated_at"]
 
