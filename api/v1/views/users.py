@@ -22,18 +22,11 @@ def get_users():
 
 # Route definition for retrieving a specific user
 # ============================================================================
-@app_views.route('/users/<string:user_id>', methods=['GET'],
+@app_views.route('/api/v1/users/<string:user_id>', methods=['GET'],
                  strict_slashes=False)
 def get_user(user_id):
     """
-    Retrieves a specific User object based on its ID.
-
-    Args:
-        user_id (str): The ID of the user to retrieve.
-
-    Returns:
-        A JSON response containing the user dictionary or a 404 error if not found.
-    """
+    Retrieves a specific User object based on its ID."""
     user = storage.get("User", user_id)
     if user is None:
         abort(404)
@@ -42,18 +35,11 @@ def get_user(user_id):
 
 # Route definition for deleting a user
 # ============================================================================
-@app_views.route('/users/<string:user_id>', methods=['DELETE'],
+@app_views.route('/api/v1/users/<string:user_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_user(user_id):
     """
-    Deletes a specific User object based on its ID.
-
-    Args:
-        user_id (str): The ID of the user to delete.
-
-    Returns:
-        An empty JSON response with a status code of 200 on success or a 404 error if not found.
-    """
+    Deletes a specific User object based on its ID."""
     user = storage.get("User", user_id)
     if user is None:
         abort(404)
@@ -64,7 +50,7 @@ def delete_user(user_id):
 
 # Route definition for creating a new user
 # ============================================================================
-@app_views.route('/users', methods=['POST'], strict_slashes=False)
+@app_views.route('/api/v1/users', methods=['POST'], strict_slashes=False)
 def post_user():
    """
     Creates a new User object in the system"""
@@ -82,19 +68,11 @@ def post_user():
 
 # Route definition for updating a user
 # ============================================================================
-@app_views.route('/users/<string:user_id>', methods=['PUT'],
+@app_views.route('/api/v1/users/<string:user_id>', methods=['PUT'],
                  strict_slashes=False)
 def put_user(user_id):
     """
-    Updates an existing User object in the system.
-
-    Args:
-        user_id (str): The ID of the user to update.
-
-    Returns:
-        A JSON response containing the updated user dictionary with a status code of 200,
-        or a 400 error with a message if the request is invalid or a 404 error if not found.
-    """
+    Updates an existing User object in the system."""
     user = storage.get("User", user_id)
     if user is None:
         abort(404)
