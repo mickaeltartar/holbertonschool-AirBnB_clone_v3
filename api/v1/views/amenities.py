@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""amenities function"""
+""" amenities function """
 
 from api.v1.views import app_views
 from models import storage
@@ -24,20 +24,25 @@ def get_amenities():
 @app_views.route('/amenities/<amenity_id>',
                  methods=['GET'], strict_slashes=False)
 def get_amenity(amenity_id):
-    """get amenity"""
-    amenity = storage.all(Amenity, amenity_id)
+    """ amenity object """
+
+    amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
+
     return jsonify(amenity.to_dict())
 
 
 # DELETE an amenity
 # ============================================================================
 
-@app_views.route('/amenities', methods=['DELETE'], strict_slashes=False)
-def delete_amenities(amenity_id):
-    """delete amenity if not exist"""
-    amenity = storage.all(Amenity, amenity_id)
+@app_views.route('/amenities/<amenity_id>',
+                 methods=['DELETE'], strict_slashes=False)
+def delete_amenity(amenity_id):
+    """ delete amenity if not exist """
+
+    amenity = storage.get(Amenity, amenity_id)
+
     if amenity is None:
         abort(404)
 
